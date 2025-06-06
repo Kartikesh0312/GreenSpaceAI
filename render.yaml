@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: greenspaceai
+    env: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "python app.py"
+    envVars:
+      - key: OPENWEATHERMAP_API_KEY
+        value: 5113ccd42dd7aa8d1790657427982c43
+    regions:
+      - oregon
