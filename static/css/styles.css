@@ -1,0 +1,10 @@
+/* Custom styles */
+input:focus {
+    outline: none;
+    border-color: #10b981;
+    box-shadow: 0 0 5px rgba(16, 185, 129, 0.5);
+}
+
+button:focus {
+    outline: none;
+}
