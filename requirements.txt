@@ -6,6 +6,9 @@ certifi==2025.4.26
 charset-normalizer==3.4.2
 click==8.2.1
 earthengine-api==1.5.18
+Flask==3.1.1
+geographiclib==2.0
+geopy==2.4.1
 gitdb==4.0.12
 GitPython==3.1.44
 google-api-core==2.25.0
@@ -19,6 +22,7 @@ google-resumable-media==2.7.2
 googleapis-common-protos==1.70.0
 httplib2==0.22.0
 idna==3.10
+itsdangerous==2.2.0
 Jinja2==3.1.6
 jsonschema==4.24.0
 jsonschema-specifications==2025.4.1
@@ -52,3 +56,4 @@ typing_extensions==4.14.0
 tzdata==2025.2
 uritemplate==4.2.0
 urllib3==2.4.0
+Werkzeug==3.1.3
