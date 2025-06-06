@@ -1,10 +1,14 @@
 document.getElementById("fetch-btn").addEventListener("click", function() {
-    const latitude = document.getElementById("latitude").value;
-    const longitude = document.getElementById("longitude").value;
+    const city = document.getElementById("city").value.trim();
+    if (!city) {
+        document.getElementById("error").innerText = "Please enter a city name.";
+        document.getElementById("error").classList.remove("hidden");
+        document.getElementById("result").classList.add("hidden");
+        return;
+    }
 
     const formData = new FormData();
-    formData.append("latitude", latitude);
-    formData.append("longitude", longitude);
+    formData.append("city", city);
 
     fetch("/fetch_data", {
         method: "POST",
@@ -17,6 +21,7 @@ document.getElementById("fetch-btn").addEventListener("click", function() {
             document.getElementById("error").classList.remove("hidden");
             document.getElementById("result").classList.add("hidden");
         } else {
+            document.getElementById("city-name").innerText = data.city;
             document.getElementById("temperature").innerText = data.temperature;
             document.getElementById("humidity").innerText = data.humidity;
             document.getElementById("ndvi").innerText = data.ndvi;
