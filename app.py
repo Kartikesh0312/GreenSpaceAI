@@ -41,9 +41,10 @@ def fetch_data():
     else:
         return jsonify({"error": f"Error fetching weather data: {data.get('message', 'Unknown error')}"}), 400
 
-    # Mock satellite data (NDVI)
+    # Mock NDVI (temporary until GEE access)
     mock_ndvi = 0.65
-    recommendation = "Suitable for tree planting (good vegetation)." if mock_ndvi > 0.5 else "May need preparation for planting."
+    # Recommendation based on heat waves (temp > 30°C suggests need for more plantation)
+    recommendation = "This area needs more plantation due to high heat waves." if temp > 30 else "Suitable for current planting conditions."
 
     return jsonify({
         "temperature": temp,
@@ -55,4 +56,4 @@ def fetch_data():
 
 if __name__ == "__main__":
     port = int(os.getenv("PORT", 5000))  
-    app.run(host="0.0.0.0", port=port, debug=False)
+    app.run(host="0.0.0.0", port=port, debug=False) 
