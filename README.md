@@ -1,8 +1,10 @@
-# GreenSpaceAI
-<<<<<<< HEAD
-Smart Tree Plantation Guidance System for I.D.E.A. Hackathon.
-=======
-Smart Tree Plantation Guidance System for the I.D.E.A. Hackathon.
-- Uses satellite imagery and climate data to recommend planting zones.
-- Built with Python, Streamlit, and SQLite.
->>>>>>> 7dcbbe3 (Initial setup with project structure)
+## How It Works
+- Fetches climate data via OpenWeatherMap API.
+- Uses mock NDVI data due to delayed GEE access.
+- Recommends planting zones based on climate and NDVI.
+
+## Setup
+1. Clone: `git clone https://github.com/Kartikesh0312/GreenSpaceAI.git`
+2. Install: `pip install -r requirements.txt`
+3. Add API key to `.env`.
+4. Run: `python src/data_fetch.py`
