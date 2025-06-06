@@ -5,7 +5,7 @@ from flask import Flask, render_template, request, jsonify
 
 app = Flask(__name__)
 
-# Load API key
+# Loading API key
 load_dotenv()
 api_key = os.getenv("OPENWEATHERMAP_API_KEY")
 
@@ -15,22 +15,26 @@ def index():
 
 @app.route("/fetch_data", methods=["POST"])
 def fetch_data():
-    # Get latitude and longitude from the form
-    lat = request.form.get("latitude")
-    lon = request.form.get("longitude")
-    
-    try:
-        lat = float(lat)
-        lon = float(lon)
-    except ValueError:
-        return jsonify({"error": "Invalid latitude or longitude. Please enter numeric values."}), 400
+    city = request.form.get("city").strip()
+    if not city:
+        return jsonify({"error": "Please enter a city name."}), 400
 
-    # Fetch weather data
-    url = f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={api_key}&units=metric"
-    response = requests.get(url)
-    data = response.json()
+    # Geocode city to get latitude and longitude using OpenWeatherMap API
+    geocode_url = f"http://api.openweathermap.org/geo/1.0/direct?q={city}&limit=1&appid={api_key}"
+    geocode_response = requests.get(geocode_url).json()
 
-    if response.status_code == 200:
+    if not geocode_response or "lat" not in geocode_response[0]:
+        return jsonify({"error": "City not found. Please check the name and try again."}), 400
+
+    lat = geocode_response[0]["lat"]
+    lon = geocode_response[0]["lon"]
+
+    # Fetching weather data
+    weather_url = f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={api_key}&units=metric"
+    weather_response = requests.get(weather_url)
+    data = weather_response.json()
+
+    if weather_response.status_code == 200:
         temp = data["main"]["temp"]
         humidity = data["main"]["humidity"]
     else:
@@ -44,8 +48,10 @@ def fetch_data():
         "temperature": temp,
         "humidity": humidity,
         "ndvi": mock_ndvi,
-        "recommendation": recommendation
+        "recommendation": recommendation,
+        "city": city
     })
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.getenv("PORT", 5000)) 
+    app.run(host="0.0.0.0", port=port, debug=False) 
