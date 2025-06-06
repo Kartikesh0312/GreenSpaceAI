@@ -5,7 +5,7 @@ from flask import Flask, render_template, request, jsonify
 
 app = Flask(__name__)
 
-# Loading API key
+# Load API key
 load_dotenv()
 api_key = os.getenv("OPENWEATHERMAP_API_KEY")
 
@@ -15,9 +15,10 @@ def index():
 
 @app.route("/fetch_data", methods=["POST"])
 def fetch_data():
-    city = request.form.get("city").strip()
+    city = request.form.get("city")
     if not city:
-        return jsonify({"error": "Please enter a city name."}), 400
+        return jsonify({"error": "No city provided. Please enter a city name."}), 400
+    city = city.strip()
 
     # Geocode city to get latitude and longitude using OpenWeatherMap API
     geocode_url = f"http://api.openweathermap.org/geo/1.0/direct?q={city}&limit=1&appid={api_key}"
@@ -29,7 +30,7 @@ def fetch_data():
     lat = geocode_response[0]["lat"]
     lon = geocode_response[0]["lon"]
 
-    # Fetching weather data
+    # Fetch weather data
     weather_url = f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={api_key}&units=metric"
     weather_response = requests.get(weather_url)
     data = weather_response.json()
@@ -53,5 +54,5 @@ def fetch_data():
     })
 
 if __name__ == "__main__":
-    port = int(os.getenv("PORT", 5000)) 
-    app.run(host="0.0.0.0", port=port, debug=False) 
+    port = int(os.getenv("PORT", 5000))  
+    app.run(host="0.0.0.0", port=port, debug=False)
